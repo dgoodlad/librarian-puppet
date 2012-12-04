@@ -26,7 +26,7 @@ module Librarian
           end
 
           def dependencies(version)
-            data = api_call("api/v1/releases.json?module=#{name}&version=#{version}")
+            data = api_call("api/v1/releases.json?module=#{name}&version=#{version.to_puppet_version}")
             data[name].first['dependencies']
           end
 
@@ -223,7 +223,7 @@ module Librarian
           manifest.source == self or raise ArgumentError
 
           name = manifest.name
-          version = manifest.version
+          version = manifest.version.to_puppet_version
           install_path = install_path(name)
           repo = repo(name)
 

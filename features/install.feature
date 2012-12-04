@@ -40,6 +40,18 @@ Feature: cli/install
     And the file "modules/apt/Modulefile" should match /version *'1\.0\.0'/
     And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
 
+  Scenario: Installing a module with a '-rc' suffix
+    Given a file named "Puppetfile" with:
+    """
+    forge "http://forge.puppetlabs.com"
+
+    mod 'puppetlabs/apache', '0.5.0-rc1'
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the file "modules/apache/Modulefile" should match /name *'puppetlabs-apache'/
+    And the file "modules/apache/Modulefile" should match /version *'0\.5\.0-rc1'/
+
   Scenario: Changing the path
     Given a directory named "puppet"
     And a file named "Puppetfile" with:
